@@ -1,0 +1,26 @@
+{
+    "name": "chainat/hashtag",
+    "description": "Pull images from Instagram & Twitter from given hashtag",
+    "require-dev": {
+        "phpunit/phpunit": "~4.6@dev"
+    },
+    "authors": [
+        {
+            "name": "Chainat Wongtapan",
+            "email": "chainat@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4":{
+            "Chainat\\Hashtag\\": "src"
+        },
+        "classmap": [
+            "src/collectors",
+            "src/collectors/CollectorInterface.php",
+            "src/collectors/Instagram.php",
+            "src/data"
+        ]
+    }
+}
