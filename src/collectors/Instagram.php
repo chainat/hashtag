@@ -53,7 +53,7 @@ class Instagram implements CollectorInterface
 	    if (isset($params['max_tag_id']) && $params['max_tag_id'] <= 0){
 	    	unset($params['max_tag_id']);
 	    }
-	    if (isset($params['source_id'])){
+	    if (isset($params['max_tag_id'])){
 	        $get_media_url .= '&max_tag_id='.$params['max_tag_id'];
 	    }
 
