@@ -42,7 +42,7 @@ class Instagram implements CollectorInterface
 		$default = [
 			'hashtag'	=>	'default',
 			'client_id'	=>	'xxx',
-			'source_id'=>	0
+			'max_tag_id'=>	0
 		];
 		$params = array_merge($default, $params);
 
@@ -50,11 +50,11 @@ class Instagram implements CollectorInterface
 	    $get_media_url = str_replace('{hashtag}', $params['hashtag'], $get_media_url);
 	    $get_media_url = str_replace('{client_id}', $params['client_id'], $get_media_url);
 
-	    if (isset($params['source_id']) && $params['source_id'] <= 0){
-	    	unset($params['source_id']);
+	    if (isset($params['max_tag_id']) && $params['max_tag_id'] <= 0){
+	    	unset($params['max_tag_id']);
 	    }
 	    if (isset($params['source_id'])){
-	        $get_media_url .= '&max_tag_id='.$params['source_id'];
+	        $get_media_url .= '&max_tag_id='.$params['max_tag_id'];
 	    }
 
 	    $ch = curl_init();
