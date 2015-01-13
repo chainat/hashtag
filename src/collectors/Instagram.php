@@ -6,6 +6,7 @@
 */
 class Instagram implements CollectorInterface
 {
+	use \Chainat\Hashtag\DataSetter;
 
 	private $url =  'https://api.instagram.com/v1/tags/{hashtag}/media/recent?client_id={client_id}';
 
@@ -63,7 +64,8 @@ class Instagram implements CollectorInterface
 	    curl_close($ch);
 
 	    $media = json_decode($response, true);
-
+	    $next_max_id = $media['pagination']['next_max_id'];
+	    $next_min_id = $media['pagination']['next_min_id'];
 	    $output = [];
 
 	    foreach($media['data'] as $insta){
@@ -87,7 +89,9 @@ class Instagram implements CollectorInterface
 	        }
 
 	        $output[] = [
-	        	'source_id'			=> $source_id,
+	        	'next_max_id'		=> $next_max_id,
+	        	'next_min_id'		=> $next_min_id,
+	        	'source_id'			=> $source_id,	        	
 	        	'user_id'			=> $user_id,
 	        	'name'				=> $this_name,
 	        	'screen_name' 		=> $screen_name,
@@ -102,4 +106,6 @@ class Instagram implements CollectorInterface
 	    }
 	    return $output;
 	}
+	
+
 }

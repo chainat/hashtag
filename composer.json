@@ -19,7 +19,8 @@
         "classmap": [
             "src/collectors",
             "src/collectors/CollectorInterface.php",
-            "src/collectors/Instagram.php",
+            "src/collectors/DataSetter.php",
+            "src/collectors/Instagram.php",            
             "src/data"
         ]
     }

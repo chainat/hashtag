@@ -22,6 +22,7 @@ class HashtagTest extends PHPUnit_Framework_TestCase
 	public function testHashtag() {
 		$hashtag = Hashtag::get("Instagram");
 		$output = $hashtag->fetch($this->default);
+		//$hashtag->save([], $output);
 		$this->assertTrue(count($output) > 0, 'Output should contain multiple elements (larger than 0)');
 	}
 
