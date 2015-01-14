@@ -16,11 +16,8 @@
         "psr-4":{
             "Chainat\\Hashtag\\": "src"
         },
-        "classmap": [
+        "classmap": [         
             "src/collectors",
-            "src/collectors/CollectorInterface.php",
-            "src/collectors/DataSetter.php",
-            "src/collectors/Instagram.php",            
             "src/data"
         ]
     }

@@ -7,35 +7,9 @@
 class Instagram implements CollectorInterface
 {
 	use \Chainat\Hashtag\DataSetter;
+	use \Chainat\Hashtag\Emoji;
 
 	private $url =  'https://api.instagram.com/v1/tags/{hashtag}/media/recent?client_id={client_id}';
-
-	private function stripEmojis($text){
-	    $clean_text = "";
-
-	    // Match Emoticons
-	    $regexEmoticons = '/[\x{1F600}-\x{1F64F}]/u';
-	    $clean_text = preg_replace($regexEmoticons, '', $text);
-
-	    // Match Miscellaneous Symbols and Pictographs
-	    $regexSymbols = '/[\x{1F300}-\x{1F5FF}]/u';
-	    $clean_text = preg_replace($regexSymbols, '', $clean_text);
-
-	    // Match Transport And Map Symbols
-	    $regexTransport = '/[\x{1F680}-\x{1F6FF}]/u';
-	    $clean_text = preg_replace($regexTransport, '', $clean_text);
-
-	    // Match Miscellaneous Symbols
-	    $regexMisc = '/[\x{2600}-\x{26FF}]/u';
-	    $clean_text = preg_replace($regexMisc, '', $clean_text);
-
-	    // Match Dingbats
-	    $regexDingbats = '/[\x{2700}-\x{27BF}]/u';
-	    $clean_text = preg_replace($regexDingbats, '', $clean_text);
-
-	    return $clean_text;
-	}
-	
 
 	public function fetch($params){
 
@@ -72,7 +46,6 @@ class Instagram implements CollectorInterface
 
 	    $output = [];
 
-
 	    foreach($media['data'] as $insta){
 	        $time_now = time();
 	        $source_id = $insta['id'];
@@ -83,32 +56,28 @@ class Instagram implements CollectorInterface
 	        $text =  $this->stripEmojis($insta['caption']['text']);
 	        $likes = $insta['likes']['count'];
 
-	        if ($insta['type'] == 'video'){
-	            $type= 'video';
-	            $media_url=$insta['images']['standard_resolution']['url'];
-	            $media_url_https=$insta['videos']['standard_resolution']['url'];
-	        } else {
+	        if ($insta['type'] == 'image'){
 	            $type= 'photo';
 	            $media_url=$insta['images']['standard_resolution']['url'];
 	            $media_url_https= '';
-	        }
 
-	        $output[] = [
-	        	'next_max_id'		=> $next_max_id,
-	        	'next_min_id'		=> $next_min_id,
-	        	'source_id'			=> $source_id,	        	
-	        	'user_id'			=> $user_id,
-	        	'name'				=> $this_name,
-	        	'screen_name' 		=> $screen_name,
-	        	'text'				=> $text,
-	        	'likes'				=> $likes,
-	        	'media_url_http'	=> $media_url,
-	        	'media_url_https'	=> $media_url_https,
-	        	'source'			=> 'Instagram',
-	        	'type'				=> $type,
-	        	'hashtag'			=> $params['hashtag'],
-                'media_created_time'=> $created_time,
-	        ];
+		        $output[] = [
+		        	'next_max_id'		=> $next_max_id,
+		        	'next_min_id'		=> $next_min_id,
+		        	'source_id'			=> $source_id,	        	
+		        	'user_id'			=> $user_id,
+		        	'name'				=> $this_name,
+		        	'screen_name' 		=> $screen_name,
+		        	'text'				=> $text,
+		        	'likes'				=> $likes,
+		        	'media_url_http'	=> $media_url,
+		        	'media_url_https'	=> $media_url_https,
+		        	'source'			=> 'Instagram',
+		        	'type'				=> $type,
+		        	'hashtag'			=> $params['hashtag'],
+	                'media_created_time'=> $created_time,
+		        ];
+	        }
 	    }
 	    return $output;
 	}
