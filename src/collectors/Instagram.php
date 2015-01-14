@@ -42,36 +42,41 @@ class Instagram implements CollectorInterface
 		$default = [
 			'hashtag'	=>	'default',
 			'client_id'	=>	'xxx',
-			'max_tag_id'=>	0
+			'max_tag_id'=>	0,
+            'min_tag_id'=>	0,
 		];
 		$params = array_merge($default, $params);
 
 		$get_media_url = $this->url;
-	    $get_media_url = str_replace('{hashtag}', $params['hashtag'], $get_media_url);
-	    $get_media_url = str_replace('{client_id}', $params['client_id'], $get_media_url);
+        $get_media_url = str_replace('{hashtag}', $params['hashtag'], $get_media_url);
+        $get_media_url = str_replace('{client_id}', $params['client_id'], $get_media_url);
 
-	    if (isset($params['max_tag_id']) && $params['max_tag_id'] <= 0){
-	    	unset($params['max_tag_id']);
-	    }
-	    if (isset($params['max_tag_id'])){
-	        $get_media_url .= '&max_tag_id='.$params['max_tag_id'];
-	    }
+        if (isset($params['max_tag_id']) && ($params['max_tag_id'] != 0)){
+            $get_media_url .= '&max_tag_id='.$params['max_tag_id'];
+        }
+        if (isset($params['min_tag_id']) && ($params['min_tag_id'] != 0)){
+            $get_media_url .= '&min_tag_id='.$params['min_tag_id'];
+        }
 
-	    $ch = curl_init();
+        echo $get_media_url . "\n";
+
+        $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $get_media_url);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	    $response = curl_exec($ch);
 	    curl_close($ch);
 
 	    $media = json_decode($response, true);
-	    $next_max_id = $media['pagination']['next_max_id'];
-	    $next_min_id = $media['pagination']['next_min_id'];
+	    $next_max_id = isset($media['pagination']['next_max_id'])? $media['pagination']['next_max_id']: '';
+	    $next_min_id = isset($media['pagination']['next_min_id'])? $media['pagination']['next_min_id']: '';
+
 	    $output = [];
+
 
 	    foreach($media['data'] as $insta){
 	        $time_now = time();
 	        $source_id = $insta['id'];
-	        $created_at = date('r', $insta['created_time']);
+            $created_time = isset($insta['created_time'])? $insta['created_time']: '';
 	        $user_id = $insta['user']['id'];
 	        $screen_name = $insta['user']['username'];
 	        $this_name = $this->stripEmojis($insta['user']['full_name']);
@@ -102,6 +107,7 @@ class Instagram implements CollectorInterface
 	        	'source'			=> 'Instagram',
 	        	'type'				=> $type,
 	        	'hashtag'			=> $params['hashtag'],
+                'media_created_time'=> $created_time,
 	        ];
 	    }
 	    return $output;
