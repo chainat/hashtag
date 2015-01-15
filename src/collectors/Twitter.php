@@ -16,7 +16,7 @@ class Twitter implements CollectorInterface
 		$connection = new \TwitterOAuth($params['consumer_key'], $params['consumer_secret'], $params['access_token'], $params['access_token_secret']);
 		$hashtag 	= $params['hashtag'];
 		$count 		= (isset($params['count']))?$params['count']:20;
-		$since_id 	= (isset($params['next_min_id']))?$params['next_min_id']:0;
+		$since_id 	= (isset($params['min_tag_id']))?$params['min_tag_id']:0;
 	    $twitterContent = $connection->get(
 	        "search/tweets", array(
 	            'q' 		=> '#'.$hashtag.' filter:images',
