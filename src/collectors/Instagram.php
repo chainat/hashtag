@@ -32,8 +32,6 @@ class Instagram implements CollectorInterface
             $get_media_url .= '&min_tag_id='.$params['min_tag_id'];
         }
 
-        echo $get_media_url . "\n";
-
         $ch = curl_init();
 	    curl_setopt($ch, CURLOPT_URL, $get_media_url);
 	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
