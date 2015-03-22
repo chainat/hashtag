@@ -44,39 +44,41 @@ class Instagram implements CollectorInterface
 
 	    $output = [];
 
-	    foreach($media['data'] as $insta){
-	        $time_now = time();
-	        $source_id = $insta['id'];
-            $created_time = isset($insta['created_time'])? $insta['created_time']: '';
-	        $user_id = $insta['user']['id'];
-	        $screen_name = $insta['user']['username'];
-	        $this_name = $this->stripEmojis($insta['user']['full_name']);
-	        $text =  $this->stripEmojis($insta['caption']['text']);
-	        $likes = $insta['likes']['count'];
+        if ($media['data']) {
+            foreach ($media['data'] as $insta) {
+                $time_now = time();
+                $source_id = $insta['id'];
+                $created_time = isset($insta['created_time']) ? $insta['created_time'] : '';
+                $user_id = $insta['user']['id'];
+                $screen_name = $insta['user']['username'];
+                $this_name = $this->stripEmojis($insta['user']['full_name']);
+                $text = $this->stripEmojis($insta['caption']['text']);
+                $likes = $insta['likes']['count'];
 
-	        if ($insta['type'] == 'image'){
-	            $type= 'photo';
-	            $media_url=$insta['images']['standard_resolution']['url'];
-	            $media_url_https= '';
+                if ($insta['type'] == 'image') {
+                    $type = 'photo';
+                    $media_url = $insta['images']['standard_resolution']['url'];
+                    $media_url_https = '';
 
-		        $output[] = [
-		        	'next_max_id'		=> $next_max_id,
-		        	'next_min_id'		=> $next_min_id,
-		        	'source_id'			=> $source_id,	        	
-		        	'user_id'			=> $user_id,
-		        	'name'				=> $this_name,
-		        	'screen_name' 		=> $screen_name,
-		        	'text'				=> $text,
-		        	'likes'				=> $likes,
-		        	'media_url_http'	=> $media_url,
-		        	'media_url_https'	=> $media_url_https,
-		        	'source'			=> 'Instagram',
-		        	'type'				=> $type,
-		        	'hashtag'			=> $params['hashtag'],
-	                'media_created_time'=> $created_time,
-		        ];
-	        }
-	    }
+                    $output[] = [
+                        'next_max_id' => $next_max_id,
+                        'next_min_id' => $next_min_id,
+                        'source_id' => $source_id,
+                        'user_id' => $user_id,
+                        'name' => $this_name,
+                        'screen_name' => $screen_name,
+                        'text' => $text,
+                        'likes' => $likes,
+                        'media_url_http' => $media_url,
+                        'media_url_https' => $media_url_https,
+                        'source' => 'Instagram',
+                        'type' => $type,
+                        'hashtag' => $params['hashtag'],
+                        'media_created_time' => $created_time,
+                    ];
+                }
+            }
+        }
 	    return $output;
 	}
 	
