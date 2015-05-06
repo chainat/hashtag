@@ -51,6 +51,7 @@ class Instagram implements CollectorInterface
                 $created_time = isset($insta['created_time']) ? $insta['created_time'] : '';
                 $user_id = $insta['user']['id'];
                 $screen_name = $insta['user']['username'];
+                $profile_picture = $insta['user']['profile_picture'];
                 $this_name = $this->stripEmojis($insta['user']['full_name']);
                 $text = $this->stripEmojis($insta['caption']['text']);
                 $likes = $insta['likes']['count'];
@@ -67,6 +68,7 @@ class Instagram implements CollectorInterface
                         'user_id' => $user_id,
                         'name' => $this_name,
                         'screen_name' => $screen_name,
+                        'profile_picture'=>$profile_picture,
                         'text' => $text,
                         'likes' => $likes,
                         'media_url_http' => $media_url,
@@ -81,6 +83,6 @@ class Instagram implements CollectorInterface
         }
 	    return $output;
 	}
-	
+
 
 }
